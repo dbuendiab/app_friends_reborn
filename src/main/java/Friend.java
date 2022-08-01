@@ -1,5 +1,4 @@
 import java.time.LocalDate;
-import java.util.Date;
 
 import static java.time.temporal.ChronoUnit.DAYS;
 
@@ -17,15 +16,19 @@ public class Friend {
      */
     private LocalDate nextDate;
 
+    private int incDays;
+
     /**
      * @param name creates instance af Friend with introduced name
      */
-    public Friend(String name) {
+    public Friend(String name, int incDays) {
         setName(name);
-        this.nextDate = LocalDate.now().plusDays(7);
+        setIncDays(incDays);
+        this.nextDate = LocalDate.now().plusDays(incDays);
     }
 
-    public Friend(String name, LocalDate nextDate) {
+    public Friend(String name, LocalDate nextDate, int incDays) {
+        setIncDays(incDays);
         setName(name);
         this.nextDate = nextDate;
     }
@@ -99,9 +102,27 @@ public class Friend {
     @Override
     public String toString() {
 
-        String s = getName() + "," + getNextDate().toString();
+        String s = getName() + "," + getNextDate().toString() + "," + getIncDays();
 
         return s;
+    }
+
+    public int getIncDays() {
+
+        return incDays;
+    }
+
+    public void setIncDays(int incDays) {
+
+        if (incDays <= 0){
+
+            System.out.println("son of a fucking bitch introduce correct number " +
+                    "piece of absolute dogshit");
+            return;
+        }
+
+        this.incDays = incDays;
+
     }
 
     /**
@@ -148,6 +169,7 @@ public class Friend {
 
     }
 
+/*
     public static void main(String args[]) {
 
         LocalDate x = LocalDate.now();
@@ -161,5 +183,6 @@ public class Friend {
         System.out.println(y.initDate);
 
     }
+*/
 
 }

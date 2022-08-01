@@ -65,7 +65,9 @@ public class Main {
             case 2 -> {
                 System.out.println("enter name to add friend");
                 String lovedFriend = Input.getString();
-                app.addFriend(lovedFriend);
+                System.out.println("enter days between appointments");
+                int incDaysOfFriend = Input.getNumber();
+                app.addFriend(lovedFriend, incDaysOfFriend);
                 app.saveData();
             }
             case 3 -> {

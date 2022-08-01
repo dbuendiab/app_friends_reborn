@@ -21,7 +21,7 @@ public class App {
      * @param name friends name
      * @throws Exception a
      */
-    public void addFriend(String name) throws Exception {
+    public void addFriend(String name, int incDays) throws Exception {
 
         if (this.friendAlreadyExists(name) >= 0) {
 
@@ -32,7 +32,7 @@ public class App {
 
             if (friends[i] == null) {
 
-                friends[i] = new Friend(name);
+                friends[i] = new Friend(name, incDays);
 
                 return;
             }
@@ -43,7 +43,7 @@ public class App {
 
     }
 
-    private void friendLoader(String name, LocalDate nextDate) throws Exception {
+    private void friendLoader(String name, LocalDate nextDate, int incDays) throws Exception {
 
         if (this.friendAlreadyExists(name) >= 0) {
 
@@ -54,7 +54,7 @@ public class App {
 
             if (friends[i] == null) {
 
-                friends[i] = new Friend(name, nextDate);
+                friends[i] = new Friend(name, nextDate, incDays);
 
                 return;
             }
@@ -178,7 +178,7 @@ public class App {
         while ((line = br.readLine()) != null) {
 
             String[] fields = line.split(",");
-            this.friendLoader(fields[0], LocalDate.parse(fields[1]));
+            this.friendLoader(fields[0], LocalDate.parse(fields[1]), Integer.parseInt(fields[2]));
         }
         br.close();
     }

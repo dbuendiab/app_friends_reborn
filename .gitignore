@@ -29,3 +29,14 @@
 /.gradle/buildOutputCleanup/outputFiles.bin
 *.class
 .gitignore
+/build/reports/tests/test/classes/AppTest.html
+/build/reports/tests/test/css/base-style.css
+/build/reports/tests/test/packages/default-package.html
+/build/reports/tests/test/index.html
+/build/test-results/test/binary/output.bin
+/build/test-results/test/binary/output.bin.idx
+/build/tmp/compileTestJava/previous-compilation-data.bin
+/build/reports/tests/test/js/report.js
+/build/test-results/test/binary/results.bin
+/build/reports/tests/test/css/style.css
+/build/test-results/test/TEST-AppTest.xml

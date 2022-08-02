@@ -93,7 +93,10 @@ public class Main {
                 try {
                     Friend theFriend = app.getFriend(selectedFriend);
                     System.out.println("\n" + theFriend.toString() + "\n");
-                    System.out.println(" 1 = edit name \n 2 = edit date");
+                    System.out.println("""
+                            1 = edit name\s
+                            2 = edit date\s
+                            3 = edit days between appointments""".indent(1));
 
                     int opt = Input.getNumber();
 
@@ -115,8 +118,15 @@ public class Main {
                                 app.editNextDateManual(theFriend.getName(), newDate2);
                             }
                         }
+                        case 3 -> {
+                            System.out.println("enter number of days");
+                            int numberOfDays = Input.getNumber();
+                            theFriend.setIncDays(numberOfDays);
+                        }
                         default -> System.out.println("you don't wanna collaborate, okay");
                     }
+
+                    app.saveData();
 
                 } catch (Exception e) {
 

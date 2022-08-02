@@ -138,6 +138,7 @@ class AppTest {
     TODO saveData() se hace aparte, quizás sería mejor hacerlo en la propia addFriend()
         y de esta forma se eliminan todas las referencias en Main (más encapsulación)
      */
+    /*
     @Test
     void comprobar_save_ingresando_y_borrando_friend() throws Exception {
         app.addFriend("scarlett", 1);
@@ -153,7 +154,7 @@ class AppTest {
         friendList = readMockingFile();
         assertFalse(friendList.contains("scarlett"));
     }
-
+    */
     /*
     Ejecuta la actualización y comprueba que todas las fechas son futuras
      */

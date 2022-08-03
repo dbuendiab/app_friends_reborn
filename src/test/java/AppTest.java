@@ -14,42 +14,81 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class AppTest {
 
+    // Este es el objeto de clase App sobre el que hacemos las pruebas
     App app;
-    List<Friend> lista;
-    String mockingList = """
-                pepe,2022-08-07,7
-                maria,2022-08-01,1
-                ignasi,2022-07-30,4
-                guille,2022-07-15,7
-                juan,2022-07-31,7        
-                """;
 
-    String friendListTestFile = "friendList.txt.bak";
+    // Guardo aquí el resultado de getFriendList(), para usarlo en varios tests luego
+    List<Friend> lista;
+
+    // Fecha de hoy para ajustar fechas anteriores y posteriores en las siguientes variables
+    LocalDate today = LocalDate.now();
+
+    // Fechas relativas a hoy (en formato texto)
+    String fechaHoy = today.toString();
+    String fechaMas6 = today.plusDays(6).toString();
+    String fechaMenos1 = today.plusDays(-1).toString();
+    String fechaMenos2 = today.plusDays(-2).toString();
+    String fechaMenos16 = today.plusDays(-16).toString();
+    //String fechaMas1 = today.plusDays(1).toString();
+    //String fechaMas2 = today.plusDays(2).toString();
+    String fechaMas16 = today.plusDays(16).toString();
+
+    // Asigno esas fechas relativas a cada usuario para no liarme al aplicarlas
+    String fechaPepe = fechaMas6;
+    String fechaMaria = fechaHoy;
+    String fechaIgnasi = fechaMenos2;
+    String fechaGuille = fechaMenos16;
+    String fechaJuan = fechaMenos1;
+    String fechaScarlett = fechaMas16;
+
+    // La lista de usuarios con las fechas sincronizadas a día de hoy
+    String mockingList = String.format("""
+                pepe,%s,7
+                maria,%s,1
+                ignasi,%s,4
+                guille,%s,7
+                juan,%s,7
+                """, fechaPepe, fechaMaria, fechaIgnasi, fechaGuille, fechaJuan);
+
+    // Para el mocking guardo la friendList.txt original en friendList.txt.bak
+    // Y así la recreo para las pruebas, al final restauraré la original
+    String friendListBackupFile = "friendList.txt.bak";
     String friendListFile = "friendList.txt";
 
+    // Guardo la friendList original y la sustituyo por mis datos mockup
     void setMockingFile() throws IOException {
         if (Files.exists(Path.of(friendListFile))) {
-            Files.copy(Path.of(friendListFile), Path.of(friendListTestFile), StandardCopyOption.REPLACE_EXISTING);
+            Files.copy(Path.of(friendListFile),
+                    Path.of(friendListBackupFile),
+                    StandardCopyOption.REPLACE_EXISTING);
         }
         BufferedWriter br = new BufferedWriter(new FileWriter(friendListFile));
         br.write(mockingList);
         br.close();
     }
 
+    // Restaura la friendList original, borrando la de prueba
     void unsetMockingFile() throws IOException {
-        if (Files.exists(Path.of(friendListTestFile))) {
-            Files.copy(Path.of(friendListTestFile), Path.of(friendListFile), StandardCopyOption.REPLACE_EXISTING);
-            Files.delete(Path.of(friendListTestFile));
+        if (Files.exists(Path.of(friendListBackupFile))) {
+            Files.copy(Path.of(friendListBackupFile),
+                    Path.of(friendListFile),
+                    StandardCopyOption.REPLACE_EXISTING);
+            Files.delete(Path.of(friendListBackupFile));
         }
     }
 
+    // Devuelve el contenido del fichero friendList (el de pruebas)
     String readMockingFile() throws IOException {
         BufferedReader br = new BufferedReader(new FileReader(friendListFile));
-        String friendListString = br.lines().collect(Collectors.joining());;
+        String friendListString = br.lines().collect(Collectors.joining());
         br.close();
         return friendListString;
     }
 
+    ///////////////////////////////////////////////////////////////////////////
+
+    // Esta función de JUnit se ejecuta ANTES de cada test
+    // Crea el fichero de prueba, crea la app, carga los datos y obtiene la lista de amigos
     @BeforeEach
     void setUp() throws Exception {
         setMockingFile();
@@ -58,30 +97,34 @@ class AppTest {
         lista = app.getFriendList();
     }
 
+    // Esta función de JUnit se ejecuta DESPUÉS de cada test
+    // Lo único que hace es restaurar la lista de amigos original
     @AfterEach
     void tearDown() throws IOException {
         unsetMockingFile();
     }
+
+    ///////////////////////////////////////////////////////////////////////////
 
     @Test
     void comprobar_se_ha_cargado_el_fichero_de_datos() {
         assertEquals(5, lista.size());
     }
 
-    // TODO descomentar las líneas de getIncDays() tras pruebas
     @Test
     void comprobar_primero_y_ultimo() {
         Friend friend = lista.get(0);
         assertEquals("pepe", friend.getName());
-        assertEquals("2022-08-07", friend.getNextDate().toString());
+        assertEquals(fechaPepe, friend.getNextDate().toString());
         assertEquals(7, friend.getIncDays());
+
         friend = lista.get(lista.size()-1);
         assertEquals("juan", friend.getName());
-        assertEquals("2022-07-31", friend.getNextDate().toString());
+        assertEquals(fechaJuan, friend.getNextDate().toString());
         assertEquals(7, friend.getIncDays());
     }
 
-    // TODO El método removeFriend() no da información de si el borrado funcionó o no
+    // NOTA El méremoveFriend() no da información de si el borrado funcionó o no
     @Test
     void comprobar_borrado_amigo_existente_e_inexistente() {
         app.removeFriend("ignasi");
@@ -94,7 +137,7 @@ class AppTest {
     }
 
     /*
-    TODO Es incómodo que una función que sugiere devolver true/false
+    NOTA Es incómodo que una función que sugiere devolver true/false
         devuelva en realidad un integer. Sería mejor que esta función
         devolviera true/false y existiera otra getFriedIndex() que
         devolviera el índice propiamente (y que serviría para construir esta)
@@ -103,31 +146,33 @@ class AppTest {
     @Test
     void comprobar_control_existencia_amigos() {
         int index = app.friendAlreadyExists("ignasi");
-        assertTrue(index == 2);
+        assertEquals(2, index);
         index = app.friendAlreadyExists("scarlett");
-        assertTrue(index == -1);
+        assertEquals(-1, index);
     }
 
-    // TODO Lo hago indirectamente, comprobando el toString() de List<Friend>
+    // NOTA Lo hago indirectamente, comprobando el toString() de List<Friend>
     @Test
     void comprobar_getList() {
-        String expected = "[pepe,2022-08-07,7, maria,2022-08-01,1, ignasi,2022-07-30,4, guille,2022-07-15,7, juan,2022-07-31,7]";
+        String expected = String.format("[pepe,%s,7, maria,%s,1, ignasi,%s,4, guille,%s,7, juan,%s,7]",
+                fechaPepe, fechaMaria, fechaIgnasi, fechaGuille, fechaJuan);
         assertEquals(expected, app.getFriendList().toString());
     }
 
     @Test
     void comprobar_getFriend() throws Exception {
+        String expected = String.format("ignasi,%s,4", fechaIgnasi);
         Friend friend = app.getFriend("ignasi");
-        assertEquals("ignasi,2022-07-30,4", friend.toString());
+        assertEquals(expected, friend.toString());
     }
 
-    // TODO El toString de la clase es el contenido del fichero friendList.txt
+    // NOTA El toString de la clase es el contenido del fichero friendList.txt
     @Test
     void comprobar_ToString() {
         assertEquals(mockingList, app.toString().replace("\r", ""));
     }
 
-    // TODO Desactivado porque, en realidad, esto queda testeado en el setup()
+    // NOTA Desactivado porque, en realidad, esto queda testeado en el setup()
     /*
     @Test
     void loadData() {
@@ -135,17 +180,20 @@ class AppTest {
     */
 
     /*
-    TODO saveData() se hace aparte, quizás sería mejor hacerlo en la propia addFriend()
+    NOTA saveData() se hace aparte, quizás sería mejor hacerlo en la propia addFriend()
         y de esta forma se eliminan todas las referencias en Main (más encapsulación)
      */
     @Test
     void comprobar_save_ingresando_y_borrando_friend() throws Exception {
+
+        String expected = String.format("scarlett,%s,1", fechaScarlett);
+
         app.addFriend("scarlett", 1);
-        app.editNextDateManual("scarlett", LocalDate.parse("2022-08-01"));
+        app.editNextDateManual("scarlett", LocalDate.parse(fechaScarlett));
         app.saveData();
 
         String friendList = readMockingFile();
-        assertTrue(friendList.contains("scarlett,2022-08-01,1"));
+        assertTrue(friendList.contains(expected));
 
         app.removeFriend("scarlett");
         app.saveData();
@@ -154,9 +202,7 @@ class AppTest {
         assertFalse(friendList.contains("scarlett"));
     }
 
-    /*
-    Ejecuta la actualización y comprueba que todas las fechas son futuras
-     */
+    // Ejecuta la actualización y comprueba que todas las fechas son futuras
     @Test
     void comprobar_que_updateFriends_convierte_todas_las_fechas_en_futuras() {
         LocalDate today = LocalDate.now();
@@ -167,32 +213,28 @@ class AppTest {
         }
     }
 
-    // TODO Estos dos últimos tests no pueden funcionar por el problema con LocalDate.now(), que cambia a diario
-/*
     @Test
     void comprobar_edicion_manual_nextDate() throws Exception {
         // Fecha futura (respecto a la actual)
-        app.editNextDateManual("ignasi", LocalDate.parse("2022-08-15"));
+        app.editNextDateManual("ignasi", LocalDate.parse(fechaMas16));
         Friend friend = app.getFriend("ignasi");
-        assertEquals("2022-08-15", friend.getNextDate().toString());
+        assertEquals(fechaMas16, friend.getNextDate().toString());
 
         // Fecha actual
-        app.editNextDateManual("ignasi", LocalDate.parse("2022-07-30"));
+        app.editNextDateManual("ignasi", LocalDate.parse(fechaHoy));
         friend = app.getFriend("ignasi");
-        assertEquals("2022-07-30", friend.getNextDate().toString());
+        assertEquals(fechaHoy, friend.getNextDate().toString());
 
-        // Fecha pasada
-        app.editNextDateManual("ignasi", LocalDate.parse("2022-07-20"));
-        friend = app.getFriend("ignasi");
-        assertEquals("2022-07-20", friend.getNextDate().toString());
+        // Fecha pasada - Actualmente no se permite, da un error (véase función comprobar_errores() a continuación)
+        //app.editNextDateManual("ignasi", LocalDate.parse(fechaMenos2));
+        //friend = app.getFriend("ignasi");
+        //assertEquals(fechaMenos2, friend.getNextDate().toString());
     }
-*/
 
-/*
+    // Comprueba que no es posible asignar una fecha pasada (da Exception)
     @Test
     void comprobar_errores() {
         assertThrows(Exception.class,
                 () -> app.editNextDateManual("ignasi", LocalDate.parse("2022-07-20")));
     }
-*/
 }

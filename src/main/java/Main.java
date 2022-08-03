@@ -1,5 +1,6 @@
 import java.io.File;
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class Main {
@@ -18,12 +19,13 @@ public class Main {
         String menu = """
                                 
                                 
-                1.Show friend list
+                1.Show friend list (by date)
                 2.Create friend
                 3.Delete friend
                 4.Show friend
                 5.Edit friend
-                0.Exit 
+                6.Sort friend by name
+                0.Exit
                                 
                                 
                 """;
@@ -57,7 +59,7 @@ public class Main {
         switch (option) {
             case 1 -> {
                 System.out.println();
-                for (Friend elem : app.getFriendList()) {
+                for (Friend elem : app.getFriendListSortedByNextDate()) {
                     System.out.println(elem.showData());
                 }
                 System.out.println();
@@ -130,8 +132,17 @@ public class Main {
 
                 } catch (Exception e) {
 
-                    System.out.println(e);
+                    System.out.println(e.getMessage());
                 }
+            }
+
+            case 6 ->{
+
+                System.out.println();
+                for (Friend elem : app.getFriendListSortedByName()){
+                    System.out.println(elem.showData());
+                }
+                System.out.println();
             }
         }
     }
@@ -175,9 +186,6 @@ public class Main {
             executeOption(option);
             app.saveData();
         }
-
-
     }
-
 }
 

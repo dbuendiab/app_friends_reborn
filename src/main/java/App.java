@@ -3,7 +3,10 @@
 import java.io.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Stream;
 
 public class App {
     /**
@@ -126,6 +129,29 @@ public class App {
         return list;
     }
 
+    public List<Friend> getFriendListSortedByNextDate () {
+        List<Friend> list = getFriendList();
+        list.sort(Comparator.comparing(Friend::getNextDate));
+        //list.sort((Friend a, Friend b) -> a.getNextDate().compareTo(b.getNextDate()));
+
+        return list;
+    }
+/*
+    private static int compareFriendByName(Friend a, Friend b) {
+        String aName = a.getName();
+        String bName = b.getName();
+        return aName.compareTo(bName);
+    }
+*/
+    public List<Friend> getFriendListSortedByName () {
+        List<Friend> list = getFriendList();
+        //list.sort(App::compareFriendByName);
+
+        list.sort(Comparator.comparing(Friend::getName));
+
+        return list;
+    }
+
     /**
      * @param name friends name
      * @return one specific friend from the array
@@ -154,7 +180,7 @@ public class App {
         StringBuilder sb = new StringBuilder();
         for (Friend elem : friends) {
             if (elem != null) {
-                sb.append(elem.toString()).append(System.lineSeparator());
+                sb.append(elem).append(System.lineSeparator());
             }
         }
         return sb.toString();

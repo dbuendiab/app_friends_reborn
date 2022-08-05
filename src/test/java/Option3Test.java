@@ -19,7 +19,7 @@ public class Option3Test extends TestSchema{
         out += "enter name to delete friend" + NL;
 
         in += "ignasi" + NL;
-        out += "deleted ignasi" + NL;
+        //out += "deleted ignasi" + NL;     // Estaría bien esta info adicional
         out += OutputString.mainMenu;
 
         in += "1" + NL;
@@ -50,7 +50,7 @@ public class Option3Test extends TestSchema{
         out += "enter name to delete friend" + NL;
 
         in += "adolfo" + NL;
-        out += "you don't have a friend named adolfo" + NL;
+        //out += "you don't have a friend named adolfo" + NL;       // Estaría bien esto también
         out += OutputString.mainMenu;
 
         in += "1" + NL;

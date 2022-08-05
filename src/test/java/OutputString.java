@@ -14,6 +14,14 @@ public class OutputString {
                                 
                 """;
 
+    static String editMenu = """
+                                
+             1 = edit name\s
+             2 = edit date\s
+             3 = edit days between appointments
+             
+            """;
+
     static String defaultFriendList = """
                                 
                 [31m --> juan || you're 16 days late!! || WEDNESDAY <--\s
@@ -61,6 +69,8 @@ public class OutputString {
                 [0m
                 
                 """;
+
+    static String toStringIgnasi = "ignasi,2022-08-03,4";
 
     static String addedManel = """
                 [32m --> manel || days remaining 7 || FRIDAY <--\s

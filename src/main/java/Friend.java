@@ -21,13 +21,13 @@ public class Friend {
     /**
      * @param name creates instance af Friend with introduced name
      */
-    public Friend(String name, int incDays) {
+    public Friend(String name, int incDays) throws Exception {
         setName(name);
         setIncDays(incDays);
         this.nextDate = LocalDate.now().plusDays(incDays);
     }
 
-    public Friend(String name, LocalDate nextDate, int incDays) {
+    public Friend(String name, LocalDate nextDate, int incDays) throws Exception {
         setIncDays(incDays);
         setName(name);
         this.nextDate = nextDate;
@@ -45,8 +45,12 @@ public class Friend {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setName(String name) throws Exception {
+        if(name == null || name.strip().equals("")){
+            throw new Exception("you need to introduce at least one piece of shit fucking character " +
+                    "mentally retarded human");
+        }
+        this.name = name.strip();
     }
 
     public LocalDate getInitDate() {
@@ -83,7 +87,7 @@ public class Friend {
 
         while (this.nextDate.compareTo(LocalDate.now()) < 0) {
 
-            this.nextDate = this.nextDate.plusDays(7);
+            this.nextDate = this.nextDate.plusDays(getIncDays());
         }
     }
 
@@ -102,9 +106,7 @@ public class Friend {
     @Override
     public String toString() {
 
-        String s = getName() + "," + getNextDate().toString() + "," + getIncDays();
-
-        return s;
+        return getName() + "," + getNextDate().toString() + "," + getIncDays();
     }
 
     public int getIncDays() {
@@ -112,13 +114,12 @@ public class Friend {
         return incDays;
     }
 
-    public void setIncDays(int incDays) {
+    public void setIncDays(int incDays) throws Exception {
 
         if (incDays <= 0){
 
-            System.out.println("son of a fucking bitch introduce correct number " +
+            throw new Exception ("son of a fucking bitch introduce correct number " +
                     "piece of absolute dogshit");
-            return;
         }
 
         this.incDays = incDays;
@@ -153,10 +154,8 @@ public class Friend {
 
         }
 
-        String s = friendColor + " --> " + getName() + daysRemaining +
+        return friendColor + " --> " + getName() + daysRemaining +
                 " || " + getNextDate().getDayOfWeek() + " <-- " + System.lineSeparator() + Colors.ANSI_RESET;
-
-        return s;
     }
 
 

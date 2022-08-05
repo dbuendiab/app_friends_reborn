@@ -3,10 +3,8 @@
 import java.io.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Stream;
 
 public class App {
     /**
@@ -208,7 +206,12 @@ public class App {
         String line;
 
         while ((line = br.readLine()) != null) {
-
+            // Tratamiento linea en blanco
+            if(line.strip().equals("")) continue;
+            // Tratamiento linea incorrecta
+            if(line.length() == line.replace(",","").length() - 2) {
+                throw new Exception(String.format("Bad line: %s", line));
+            }
             String[] fields = line.split(",");
             this.friendLoader(fields[0], LocalDate.parse(fields[1]), Integer.parseInt(fields[2]));
         }

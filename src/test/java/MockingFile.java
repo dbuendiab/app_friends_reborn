@@ -24,8 +24,8 @@ public class MockingFile {
     String fechaPepe = fechaMas6;
     String fechaMaria = fechaHoy;
     String fechaIgnasi = fechaMenos2;
-    String fechaGuille = fechaMenos16;
-    String fechaJuan = fechaMenos1;
+    String fechaJuan = fechaMenos16;
+    String fechaGuille = fechaMenos1;
     String fechaScarlett = fechaMas16;
 
     // La lista de usuarios con las fechas sincronizadas a día de hoy

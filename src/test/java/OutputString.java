@@ -16,11 +16,11 @@ public class OutputString {
 
     static String defaultFriendList = """
                                 
-                [31m --> guille || you're 16 days late!! || WEDNESDAY <--\s
+                [31m --> juan || you're 16 days late!! || WEDNESDAY <--\s
                 [0m
                 [31m --> ignasi || you're 2 days late!! || WEDNESDAY <--\s
                 [0m
-                [31m --> juan || you're 1 days late!! || THURSDAY <--\s
+                [31m --> guille || you're 1 days late!! || THURSDAY <--\s
                 [0m
                 [33m --> maria || disappointment is today!! || FRIDAY <--\s
                 [0m
@@ -28,16 +28,38 @@ public class OutputString {
                 [0m
                 """;
 
-    static String defaultFriendListWithoutIgnasi = """
+    static String byNameFriendList = """
                                 
-                [31m --> guille || you're 16 days late!! || WEDNESDAY <--\s
+                [31m --> guille || you're 1 days late!! || THURSDAY <--\s
                 [0m
-                [31m --> juan || you're 1 days late!! || THURSDAY <--\s
+                [31m --> ignasi || you're 2 days late!! || WEDNESDAY <--\s
+                [0m
+                [31m --> juan || you're 16 days late!! || WEDNESDAY <--\s
                 [0m
                 [33m --> maria || disappointment is today!! || FRIDAY <--\s
                 [0m
                 [32m --> pepe || days remaining 6 || THURSDAY <--\s
                 [0m
+                """;
+
+
+    static String defaultFriendListWithoutIgnasi = """
+                                
+                [31m --> juan || you're 16 days late!! || WEDNESDAY <--\s
+                [0m
+                [31m --> guille || you're 1 days late!! || THURSDAY <--\s
+                [0m
+                [33m --> maria || disappointment is today!! || FRIDAY <--\s
+                [0m
+                [32m --> pepe || days remaining 6 || THURSDAY <--\s
+                [0m
+                """;
+
+    static String showIgnasi = """
+                                
+                [31m --> ignasi || you're 2 days late!! || WEDNESDAY <--\s
+                [0m
+                
                 """;
 
     static String addedManel = """

@@ -1,20 +1,21 @@
 import java.io.File;
 import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.Scanner;
 
 public class Main {
 
+    Input input;
 
-    static LocalDate today = null;
+    LocalDate today;
 
-    static App app;
+    App app;
 
-    static {
+    Main() {
+        input = new Input();
+        today = null;
         app = new App();
     }
 
-    public static void printMenu() {
+    public void printMenu() {
 
         String menu = """
                                 
@@ -53,7 +54,7 @@ public class Main {
         return option;
 */
 
-    public static void executeOption(int option) throws Exception {
+    public void executeOption(int option) throws Exception {
 
 
         switch (option) {
@@ -66,21 +67,26 @@ public class Main {
             }
             case 2 -> {
                 System.out.println("enter name to add friend");
-                String lovedFriend = Input.getString();
+                String lovedFriend = input.getString();
                 System.out.println("enter days between appointments");
-                int incDaysOfFriend = Input.getNumber();
+                int incDaysOfFriend = input.getNumber();
+                //try {
                 app.addFriend(lovedFriend, incDaysOfFriend);
+                //} catch (Exception e) {
+                //    System.out.println("friend already exists");
+                //    break;
+                //}
                 app.saveData();
             }
             case 3 -> {
                 System.out.println("enter name to delete friend");
-                String hatedFriend = Input.getString();
+                String hatedFriend = input.getString();
                 app.removeFriend(hatedFriend);
                 app.saveData();
             }
             case 4 -> {
                 System.out.println("enter name of friend");
-                String inquiredFriend = Input.getString();
+                String inquiredFriend = input.getString();
                 if (app.friendAlreadyExists(inquiredFriend) == -1) {
 
                     System.out.println("friend doesn't exist");
@@ -91,7 +97,7 @@ public class Main {
             }
             case 5 -> {
                 System.out.println("enter name of friend");
-                String selectedFriend = Input.getString();
+                String selectedFriend = input.getString();
                 try {
                     Friend theFriend = app.getFriend(selectedFriend);
                     System.out.println("\n" + theFriend.toString() + "\n");
@@ -100,12 +106,12 @@ public class Main {
                             2 = edit date\s
                             3 = edit days between appointments""".indent(1));
 
-                    int opt = Input.getNumber();
+                    int opt = input.getNumber();
 
                     switch (opt) {
                         case 1 -> {
                             System.out.println("enter new name");
-                            String newName = Input.getString();
+                            String newName = input.getString();
                             if (app.friendAlreadyExists(newName) > -1) {
 
                                 System.out.println("name already in use");
@@ -115,14 +121,14 @@ public class Main {
                         }
                         case 2 -> {
                             System.out.println("enter new date, format yyyy-mm-dd");
-                            LocalDate newDate2 = Input.getDate();
+                            LocalDate newDate2 = input.getDate();
                             if (newDate2 != null) {
                                 app.editNextDateManual(theFriend.getName(), newDate2);
                             }
                         }
                         case 3 -> {
                             System.out.println("enter number of days");
-                            int numberOfDays = Input.getNumber();
+                            int numberOfDays = input.getNumber();
                             theFriend.setIncDays(numberOfDays);
                         }
                         default -> System.out.println("you don't wanna collaborate, okay");
@@ -147,7 +153,7 @@ public class Main {
         }
     }
 
-    private static void updateTime() {
+    private void updateTime() {
 
         if (today == null || today.compareTo(LocalDate.now()) < 0) {
             today = LocalDate.now();
@@ -157,7 +163,7 @@ public class Main {
 
 
     public static void main(String[] args) throws Exception {
-
+        Main theApp = new Main();
 
         /*app.addFriend("diego");
         app.addFriend("sediego");
@@ -168,24 +174,24 @@ public class Main {
         File f = new File("friendList.txt");
         if (f.isFile()) {
 
-            app.loadData();
+            theApp.app.loadData();
         }
-        app.saveData();
+        theApp.app.saveData();
 
         while (true) {
 
             // updateTime();
-            printMenu();
+            theApp.printMenu();
 
-            int option = Input.getNumber();
+            int option = theApp.input.getNumber();
 
             if (option == 0) {
                 System.out.println("get fucked");
                 break;
             }
-            executeOption(option);
-            app.saveData();
+            theApp.executeOption(option);
+            theApp.app.saveData();
         }
+        theApp.input.close();
     }
 }
-

@@ -4,21 +4,19 @@ import java.util.Scanner;
 public class Input {
 
 
-    static Scanner scanner;
+    Scanner scanner;
 
-    static {
+    Input() {
         scanner = new Scanner(System.in);
     }
 
-    static public String getString() {
+    public String getString() {
 
-        String line = scanner.nextLine();
-
-        return line;
+        return scanner.nextLine();
 
     }
 
-    static public Integer getNumber() {
+    public Integer getNumber() {
 
         int num = -1;
         if (scanner.hasNextInt()) {
@@ -31,18 +29,21 @@ public class Input {
         return num;
     }
 
-    static public LocalDate getDate() {
+    public LocalDate getDate() {
 
         String newDate = scanner.nextLine();
         try {
 
-            LocalDate newDate2 = LocalDate.parse(newDate);
-            return newDate2;
+            return LocalDate.parse(newDate);
 
         } catch (Exception e) {
-            System.out.println(e);
+            System.out.println(e.getMessage());
             System.out.println("incorrect format");
         }
         return null;
+    }
+
+    public void close() {
+        scanner.close();
     }
 }

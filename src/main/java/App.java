@@ -57,7 +57,13 @@ public class App {
 
             if (friends[i] == null) {
 
-                friends[i] = new Friend(name, nextDate, incDays);
+                try {
+                    friends[i] = new Friend(name, nextDate, incDays);
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                    System.out.printf("incorrect format: name=[%s], nextDate=[%s], incDays=[%d]\n", name, nextDate.toString(), incDays);
+                    //skip this entry
+                }
 
                 return;
             }

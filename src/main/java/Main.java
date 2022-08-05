@@ -111,7 +111,11 @@ public class Main {
                                 System.out.println("name already in use");
                                 break;
                             }
-                            theFriend.setName(newName);
+                            try {
+                                theFriend.setName(newName);
+                            } catch (Exception e) {
+                                System.out.println(e.getMessage());
+                            }
                         }
                         case 2 -> {
                             System.out.println("enter new date, format yyyy-mm-dd");
@@ -123,7 +127,11 @@ public class Main {
                         case 3 -> {
                             System.out.println("enter number of days");
                             int numberOfDays = Input.getNumber();
-                            theFriend.setIncDays(numberOfDays);
+                            try {
+                                theFriend.setIncDays(numberOfDays);
+                            } catch (Exception e) {
+                                System.out.println(e.getMessage());
+                            }
                         }
                         default -> System.out.println("you don't wanna collaborate, okay");
                     }
@@ -136,10 +144,10 @@ public class Main {
                 }
             }
 
-            case 6 ->{
+            case 6 -> {
 
                 System.out.println();
-                for (Friend elem : app.getFriendListSortedByName()){
+                for (Friend elem : app.getFriendListSortedByName()) {
                     System.out.println(elem.showData());
                 }
                 System.out.println();

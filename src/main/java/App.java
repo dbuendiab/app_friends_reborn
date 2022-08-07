@@ -228,6 +228,11 @@ public class App {
 
     }
 
+    public void updateFriend(String name) throws Exception {
+        Friend elem = getFriend(name);
+        elem.setNextDate();
+    }
+
     public void updateFriends() {
 
         for (Friend elem : friends) {
